@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" targetNamespace="http://pressassociation.com/racing/publisher/customer/config/2013-02-05/"
+	xmlns="http://pressassociation.com/racing/publisher/customer/config/2013-02-05/">
+	
+	<xs:element name="endpoint" abstract="true" />
+	
+	<xs:element name="FTP" substitutionGroup="endpoint" type="base-ftp-endpoint" />
+	
+	<xs:element name="SFTP" substitutionGroup="endpoint" type="base-ftp-endpoint" />
+	
+	<xs:element name="Socket" substitutionGroup="endpoint">
+		<xs:complexType>
+			<xs:all>
+				<xs:element ref="Host" />
+				<xs:element ref="Port" />
+				<xs:element name="Persistent" minOccurs="0" />
+				<xs:element name="MessageFormat" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="RAW" />
+							<xs:enumeration value="PASOCKET" />
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="HTTP" substitutionGroup="endpoint" type="base-http-endpoint" />
+	
+	<xs:element name="HTTPS" substitutionGroup="endpoint" type="base-http-endpoint" />
+
+	<xs:complexType name="base-ftp-endpoint">
+		<xs:all>
+			<xs:element ref="Host" />
+			<xs:element ref="Port" minOccurs="0"/>
+			<xs:element ref="Username" />
+			<xs:element ref="Password" />
+			<xs:element name="Directory" type="xs:string" />
+			<xs:element name="Filename" type="xs:string" minOccurs="0"/>
+			<xs:element name="Mode" type="ftpMode" />
+			<xs:element name="Type" type="ftpType" />
+		</xs:all>
+	</xs:complexType>
+	
+	<xs:complexType name="base-http-endpoint">
+		<xs:all>
+			<xs:element ref="Host" minOccurs="0" />
+			<xs:element ref="Port" minOccurs="0" />
+			<xs:element ref="Username" minOccurs="0" />
+			<xs:element ref="Password" minOccurs="0" />
+			<xs:element name="URI" type="xs:anyURI" />
+			<xs:element ref="Header" minOccurs="0" />				
+			<xs:element name="Persistent" minOccurs="0" type="xs:boolean" default="true"/>
+		</xs:all>
+	</xs:complexType>
+	
+	<xs:simpleType name="ftpMode">
+		<xs:annotation>
+			<xs:documentation>FTP Mode</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ACTIVE" />
+			<xs:enumeration value="PASSIVE" />
+		</xs:restriction>
+	</xs:simpleType>
+		
+	<xs:simpleType name="ftpType">
+		<xs:annotation>
+			<xs:documentation>FTP Type</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ASCII" />
+			<xs:enumeration value="BINARY" />
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:element name="Host" type="xs:normalizedString" />
+	
+	<xs:element name="Port" type="xs:positiveInteger" />
+	
+	<xs:element name="Username" type="xs:normalizedString" />
+	
+	<xs:element name="Password" type="xs:normalizedString" />
+	
+	<xs:element name="Header">
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="ContentType" type="xs:normalizedString" minOccurs="0" />
+				<xs:element name="FileName" type="xs:string" minOccurs="0" />
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+	
+</xs:schema>

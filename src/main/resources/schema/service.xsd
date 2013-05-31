@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" targetNamespace="http://pressassociation.com/racing/publisher/customer/config/2013-02-05/"
+	xmlns="http://pressassociation.com/racing/publisher/customer/config/2013-02-05/"> 
+	
+	<xs:annotation>
+		<xs:documentation>
+			A Service is associated with one Customer; it describes a type of data a customer receives, and the end-point where they receive it, 
+			and one or more Package names which are used to match outgoing published race documents to the Service.
+		</xs:documentation>
+	</xs:annotation>
+	
+	<xs:include schemaLocation="endpoints.xsd"/>
+	<xs:include schemaLocation="package.xsd"/>
+	<xs:include schemaLocation="common.xsd"/>
+
+	<xs:element name="CustomerService">
+		<xs:annotation>
+			<xs:documentation>Stored document, associating a Customer with a Service.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="CustomerRef"/>
+				<xs:element ref="Service"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="Services">
+		<xs:annotation>
+			<xs:documentation>For Bulk Service Loading/Retrieval.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence maxOccurs="unbounded">
+				<xs:element ref="Service"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="Service">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="UName" >
+					<xs:annotation>
+						<xs:documentation>Unique name for service (per customer).</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="ServiceState"/>
+				<xs:choice>
+					<xs:element ref="RaceBettingService"/>
+					<xs:element ref="RaceCardService"/>
+					<xs:element ref="VirtualSportService"/>
+				</xs:choice>
+				<xs:element ref="Endpoint"/>
+			</xs:sequence>
+			<xs:attributeGroup ref="disable-able">
+				<xs:annotation>
+					<xs:documentation>Marking a Service as disabled prevents endpoint being used.</xs:documentation>
+				</xs:annotation>
+			</xs:attributeGroup>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="RaceBettingService">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="FormatRef" />
+				<xs:element ref="PackageRefs"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="RaceCardService">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="FormatRef" />
+				<xs:element ref="PackageRefs"/>
+				<xs:element ref="RaceCard48HrOptOut" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="VirtualSportService">
+		<xs:complexType>
+			<xs:sequence/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="FormatRef" type="formatNameRef"/>
+	
+	<xs:simpleType name="formatNameRef">
+		<xs:annotation>
+			<xs:documentation>Output Format (DTD/Schema Variant) Identifier, e.g. RACE_XML3.14_NO_POSTRACE_DT</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[A-Za-z][\w\-._]+"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:element name="Endpoint">
+		<xs:annotation>
+			<xs:documentation>End-point connection specification (content is substitution group: see endpoints.xsd).</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="endpoint"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="ServiceState">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="LIVE" />
+				<xs:enumeration value="BACKUP" />
+				<xs:enumeration value="DEV" />
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+
+	<xs:element name="RaceCard48HrOptOut" type="xs:boolean" default="false">
+		<xs:annotation>
+			<xs:documentation>If true, prevents Race Cards more than 48h in advance being sent to this service.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	
+	<xs:element name="PackageRefs">
+		<xs:complexType>
+			<xs:sequence minOccurs="0" maxOccurs="unbounded">
+				<xs:element ref="PackageRef"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+</xs:schema>

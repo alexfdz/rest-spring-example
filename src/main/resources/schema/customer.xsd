@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" targetNamespace="http://pressassociation.com/racing/publisher/customer/config/2013-02-05/"
+	xmlns="http://pressassociation.com/racing/publisher/customer/config/2013-02-05/">
+	
+	<xs:annotation>
+		<xs:documentation>A Customer has one or more associated Services, which describe what the Customer receives.</xs:documentation>
+	</xs:annotation>
+
+	<xs:include schemaLocation="common.xsd"/>
+	<xs:include schemaLocation="service.xsd"/>
+	
+	<xs:element name="Customer">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="UName">
+					<xs:annotation>
+						<xs:documentation>Unique identifier for Customer.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="CustomerDescription" minOccurs="0"/>
+				<xs:element ref="TechnicalContacts" minOccurs="0"/>
+				<xs:element ref="Notes" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attributeGroup ref="disable-able">
+				<xs:annotation>
+					<xs:documentation>Marking a Customer as disabled implicitly disables all their Services.</xs:documentation>
+				</xs:annotation>
+			</xs:attributeGroup>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="CustomerDescription" type="xs:normalizedString">
+		<xs:annotation>
+			<xs:documentation>e.g. LBO</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
+	<xs:element name="TechnicalContacts">
+		<xs:complexType>
+			<xs:sequence maxOccurs="unbounded">
+				<xs:element ref="Person"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="Person">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="PersonName" type="xs:normalizedString"/>
+				<xs:element name="Role" type="xs:normalizedString" minOccurs="0"/>
+				<xs:element name="Telephone" type="xs:normalizedString" minOccurs="0"/>
+				<xs:element name="Email" type="xs:normalizedString" minOccurs="0"/>
+				<xs:element name="Other" type="xs:string" minOccurs="0"/>
+				<xs:element ref="Notes" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="Notes" type="xs:string"/>
+
+</xs:schema>
