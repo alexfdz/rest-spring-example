@@ -1,30 +1,41 @@
 package com.example.rest.controller;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import org.springframework.stereotype.Component;
+import com.example.rest.dao.CustomerDataAccess;
+import com.example.rest.model.Customer;
 
-@Component
-@Path("/customer")
+@Controller
+@RequestMapping("/customer")
 public class CustomerController {
 	
-	@GET
-	@Path("{id}")
-	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public Response get(@PathParam(value = "id") final String id) throws Throwable {
+	@Autowired
+	private CustomerDataAccess customerDataAccess;
+	
+	@RequestMapping(value="/{uName}", 
+			method= RequestMethod.GET,
+			produces={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+	public Customer getCustomerByUName(@PathVariable final String uName) throws Throwable {
 		return null;
 	}
 
-	@POST
-	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public Response save() throws Throwable {
+	@RequestMapping(method= {RequestMethod.POST, RequestMethod.PUT},
+		consumes={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
+		produces={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+	public Customer saveOrUpdateCustomer(@RequestBody Customer customer) throws Throwable {
+		return null;
+	}
+	
+	@RequestMapping(method= {RequestMethod.DELETE},
+			consumes={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
+			produces={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+	public Customer deleteCustomer(@RequestBody Customer customer) throws Throwable {
 		return null;
 	}
 }
