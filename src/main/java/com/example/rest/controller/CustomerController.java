@@ -22,20 +22,20 @@ public class CustomerController {
 			method= RequestMethod.GET,
 			produces={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
 	public Customer getCustomerByUName(@PathVariable final String uName) throws Throwable {
-		return null;
+		return customerDataAccess.getById(uName);
 	}
 
 	@RequestMapping(method= {RequestMethod.POST, RequestMethod.PUT},
 		consumes={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
 		produces={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
 	public Customer saveOrUpdateCustomer(@RequestBody Customer customer) throws Throwable {
-		return null;
+		customerDataAccess.saveOrUpdate(customer);
+		return customer;
 	}
 	
 	@RequestMapping(method= {RequestMethod.DELETE},
-			consumes={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE},
-			produces={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-	public Customer deleteCustomer(@RequestBody Customer customer) throws Throwable {
-		return null;
+			consumes={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+	public void deleteCustomer(@RequestBody Customer customer) throws Throwable {
+		customerDataAccess.delete(customer);
 	}
 }

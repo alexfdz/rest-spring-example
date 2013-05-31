@@ -9,16 +9,6 @@
 	http://www.mockito.org/spring/mockito classpath:spring/mockito.xsd">
 
     <context:component-scan base-package="com.example.rest"/>
-
-    <bean id="propertyConfigurer" class=
-            "org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="locations">
-            <list>
-                <value>classpath:service-load.properties</value>
-            </list>
-        </property>
-    </bean>
-    
 	<bean id="jsonMapper" class="org.codehaus.jackson.map.ObjectMapper"/>
 
 </beans>

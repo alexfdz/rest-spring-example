@@ -4,10 +4,10 @@
 
 	<groupId>com.example.rest</groupId>
 	<artifactId>rest-example</artifactId>
-	<version>1.0.0</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
-	<name>Web controllers</name>
+	<name>Customer API</name>
 
 	<properties>
 		<java.version>1.6</java.version>

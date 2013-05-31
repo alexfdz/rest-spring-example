@@ -2,15 +2,13 @@ package com.example.rest.steps;
 
 import org.junit.BeforeClass;
 
-import com.sun.jersey.api.client.ClientResponse;
-
 public class CustomerControllerSteps {
 
-	private static ClientResponse clientResponse;
+//	private static ClientResponse clientResponse;
 
 	@BeforeClass
 	public static void before() {
-		clientResponse = null;
+//		clientResponse = null;
 	}
 
 //	@When("^I search for a valid person resource with id \"([^\"]*)\"$")
