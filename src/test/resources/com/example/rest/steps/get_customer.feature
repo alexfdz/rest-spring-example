@@ -2,14 +2,13 @@ Feature: A user queries for a customer resource
   As a user
   I want to get a customer resource information
 
- Scenario Outline: Custoemr resource query  
+ Scenario Outline: Customer resource query  
    When I search for a valid customer resource with id "<id>"
    Then the person customer description is "<customerDescription>"
   Examples:
     | id | customerDescription |
-    | EP94 | EP94 |
-    | EP18 | EP18 |
-    | EP22 | EP22 |
+    | EP94 | description EP94 |
+    | EP18 | description EP18 |
 
  Scenario: Customer resource query with incorrect id
    When I search for a valid customer resource with id "W19"
@@ -17,12 +16,12 @@ Feature: A user queries for a customer resource
    
  Scenario Outline: Customer resource query with specific format  
    When I search for a valid customer resource with id "EP94" and format "<format>"
-   Then the response is successful
+   Then the response format is "<format>" and the status is successful
   Examples:
     | format           |
     | application/json |
     | application/xml  |
  
- Scenario: Custoemr resource query with incorrect specific format  
-   When I search for a valid customer resource with id "1" and format "application/html"
-   Then the response fails with an internal server error
+ Scenario: Customer resource query with incorrect specific format  
+   When I search for a valid customer resource with id "EP94" and format "text/html"
+   Then the response fails with an Not acceptable error
