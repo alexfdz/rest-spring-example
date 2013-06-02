@@ -22,6 +22,10 @@ import com.pressassociation.racing.publisher.customer.config._2013_02_05.Custome
 	produces={MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
 public class CustomerController {
 	
+	//TODO: POST should return a correct HTTP headers
+	//TODO: Check requests mappings for POST and PUT (id?)
+	//TODO: Control 404
+	
 	@Autowired
 	protected CustomerDataAccess customerDataAccess;
 	
