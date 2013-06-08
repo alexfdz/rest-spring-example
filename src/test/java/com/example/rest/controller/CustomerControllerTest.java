@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.example.rest.dao.MockedCustomerDataAccess;
-import com.pressassociation.racing.publisher.customer.config._2013_02_05.Customer;
+import com.example.rest.model.Customer;
 
 public class CustomerControllerTest{
 	

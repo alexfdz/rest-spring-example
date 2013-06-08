@@ -4,7 +4,8 @@ Feature: A user queries for multiple customer resources
 
  Scenario Outline: Customer resources query  
    When I search for all the exisiting resources and format "<format>"
-   Then I should get a successful status and not empty response
+   Then the status is 200
+   Then the response is not empty
   Examples:
     | format           |
     | application/json |
@@ -12,4 +13,4 @@ Feature: A user queries for multiple customer resources
 
  Scenario: Customer resources query with incorrect specific format  
    When I search for all the exisiting resources and format "text/html"
-   Then the response fails with an Not acceptable error
+   Then the status is 406

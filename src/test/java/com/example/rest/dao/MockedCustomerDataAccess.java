@@ -9,7 +9,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
-import com.pressassociation.racing.publisher.customer.config._2013_02_05.Customer;
+import com.example.rest.model.Customer;
 
 @Component
 public class MockedCustomerDataAccess implements CustomerDataAccess{

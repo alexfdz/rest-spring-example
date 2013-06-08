@@ -2,7 +2,7 @@ package com.example.rest.dao;
 
 import java.util.List;
 
-import com.pressassociation.racing.publisher.customer.config._2013_02_05.Customer;
+import com.example.rest.model.Customer;
 
 public interface CustomerDataAccess {
 	

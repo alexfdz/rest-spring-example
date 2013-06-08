@@ -5,6 +5,7 @@ import static com.example.rest.controller.RequestMappings.CUSTOMER_CONTROLLER_UR
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,10 +13,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.example.rest.dao.CustomerDataAccess;
 import com.example.rest.exception.ResourceNotFoundException;
-import com.pressassociation.racing.publisher.customer.config._2013_02_05.Customer;
+import com.example.rest.model.Customer;
 
 @Controller
 @RequestMapping(value= CUSTOMER_CONTROLLER_URI, 
@@ -43,10 +45,22 @@ public class CustomerController {
 			throw new ResourceNotFoundException();
 		}
 	}
-
-	@RequestMapping(method= {RequestMethod.POST, RequestMethod.PUT})
-	public @ResponseBody Customer saveOrUpdateCustomer(@RequestBody Customer customer) throws Throwable {
+	
+	@RequestMapping(method= {RequestMethod.POST})
+	@ResponseStatus(HttpStatus.CREATED)
+	public @ResponseBody Customer createCustomer(@RequestBody Customer customer) throws Throwable {
 		customerDataAccess.saveOrUpdate(customer);
+		return customer;
+	}
+
+	@RequestMapping(value="/{uName}", method= {RequestMethod.PUT})
+	public @ResponseBody Customer updateCustomer(@PathVariable final String uName, 
+			@RequestBody Customer customer) throws Throwable {
+		if(customerDataAccess.customerExists(uName)){
+			customerDataAccess.saveOrUpdate(customer);
+		}else{
+			throw new ResourceNotFoundException();
+		}
 		return customer;
 	}
 	
