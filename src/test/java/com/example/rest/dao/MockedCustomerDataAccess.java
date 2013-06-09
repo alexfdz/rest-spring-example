@@ -6,48 +6,53 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
+import com.example.rest.exception.IllegalResourceContentException;
 import com.example.rest.model.Customer;
 
 @Component
 public class MockedCustomerDataAccess implements CustomerDataAccess{
 	
 	private static final Logger log = Logger.getLogger(MockedCustomerDataAccess.class);
-	public static final String MOCKED_CUSTOMER_EP94_UNAME = "EP94";
-	public static final String MOCKED_CUSTOMER_EP18_UNAME = "EP18";
+	public static final String MOCKED_CUSTOMER_EP94_NAME = "EP94";
+	public static final String MOCKED_CUSTOMER_EP18_NAME = "EP18";
 	
 	private Map<String, Customer> customers;
 	
 	public MockedCustomerDataAccess(){
 		customers = new HashMap<String, Customer>();
-		customers.put(MOCKED_CUSTOMER_EP94_UNAME, buildCostumer(MOCKED_CUSTOMER_EP94_UNAME));
-		customers.put(MOCKED_CUSTOMER_EP18_UNAME, buildCostumer(MOCKED_CUSTOMER_EP18_UNAME));
+		customers.put(MOCKED_CUSTOMER_EP94_NAME, buildCostumer(MOCKED_CUSTOMER_EP94_NAME));
+		customers.put(MOCKED_CUSTOMER_EP18_NAME, buildCostumer(MOCKED_CUSTOMER_EP18_NAME));
 	}
 
-	private Customer buildCostumer(String customerUName){
+	private Customer buildCostumer(String customerName){
 		Customer customer = new Customer();
-		customer.setUName(customerUName);
-		customer.setCustomerDescription("description " + customerUName);
+		customer.setName(customerName);
+		customer.setCustomerDescription("description " + customerName);
 		return customer;
 	}
 	
 	@Override
-	public Customer getById(String customerUName) {
-		return customers.get(customerUName);
+	public Customer getById(String customerName) {
+		return customers.get(customerName);
 	}
 
 	@Override
 	public void saveOrUpdate(Customer customer) {
-		customers.put(customer.getUName(), customer);
-		log.info("Updated customer " + customer.getUName());
+		if(StringUtils.isEmpty(customer.getName())){
+			throw new IllegalResourceContentException();
+		}
+		customers.put(customer.getName(), customer);
+		log.info("Updated customer " + customer.getName());
 	}
 
 	@Override
 	public void delete(Customer customer) {
-		customers.remove(customer.getUName());
-		log.info("Deleted customer " + customer.getUName());
+		customers.remove(customer.getName());
+		log.info("Deleted customer " + customer.getName());
 	}
 
 	@Override
@@ -56,7 +61,7 @@ public class MockedCustomerDataAccess implements CustomerDataAccess{
 	}
 
 	@Override
-	public boolean customerExists(String customerUName) {
-		return customers.containsKey(customerUName);
+	public boolean customerExists(String customerName) {
+		return customers.containsKey(customerName);
 	}
 }

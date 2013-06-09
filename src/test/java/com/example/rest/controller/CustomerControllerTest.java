@@ -1,6 +1,6 @@
 package com.example.rest.controller;
 
-import static com.example.rest.dao.MockedCustomerDataAccess.MOCKED_CUSTOMER_EP18_UNAME;
+import static com.example.rest.dao.MockedCustomerDataAccess.MOCKED_CUSTOMER_EP18_NAME;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
@@ -22,12 +22,9 @@ public class CustomerControllerTest{
 	}
 	
 	@Test
-	public void given_a_correct_uname_should_get_the_customer_entity() throws Throwable{
-		Customer customer = controller.getCustomerByUName(MOCKED_CUSTOMER_EP18_UNAME);
+	public void given_a_correct_name_should_get_the_customer_entity() throws Throwable{
+		Customer customer = controller.getById(MOCKED_CUSTOMER_EP18_NAME);
 		assertThat(customer, is(notNullValue()));
-		assertThat(customer.getUName(), is(MOCKED_CUSTOMER_EP18_UNAME));
+		assertThat(customer.getName(), is(MOCKED_CUSTOMER_EP18_NAME));
 	}
-	
-	
-	
 }

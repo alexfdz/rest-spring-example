@@ -6,7 +6,7 @@ import com.example.rest.model.Customer;
 
 public interface CustomerDataAccess {
 	
-	public Customer getById(String customerUName);
+	public Customer getById(String customerName);
 	
 	public void saveOrUpdate(Customer customer);
 	
@@ -14,6 +14,6 @@ public interface CustomerDataAccess {
 	
 	public List<Customer> findAll();
 	
-	public boolean customerExists(String customerUName);
+	public boolean customerExists(String customerName);
 
 }

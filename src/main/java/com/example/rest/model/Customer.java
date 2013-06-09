@@ -4,34 +4,23 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.NormalizedStringAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "uName",
-    "customerDescription",
-    "notes"
-})
-@XmlRootElement(name = "Customer")
-public class Customer {
+@XmlRootElement
+public class Customer extends Resource{
 
-    @XmlElement(name = "UName", required = true)
-    protected String uName;
-    @XmlElement(name = "CustomerDescription")
-    @XmlJavaTypeAdapter(NormalizedStringAdapter.class)
-    @XmlSchemaType(name = "normalizedString")
+    @XmlElement(required = true)
+    protected String name;
+    @XmlElement
     protected String customerDescription;
-    @XmlElement(name = "Notes")
+    @XmlElement
     protected String notes;
     
-	public String getUName() {
-		return uName;
+	public String getName() {
+		return name;
 	}
-	public void setUName(String uName) {
-		this.uName = uName;
+	public void setName(String name) {
+		this.name = name;
 	}
 	public String getCustomerDescription() {
 		return customerDescription;
@@ -44,5 +33,10 @@ public class Customer {
 	}
 	public void setNotes(String notes) {
 		this.notes = notes;
+	}
+	
+	@Override
+	public String getId() {
+		return getName();
 	}
 }
