@@ -35,12 +35,12 @@ public class CustomerController extends CRUDController<Customer>{
 
 	@Override
 	public void update(Customer customer) throws Throwable {
-		customerDataAccess.saveOrUpdate(customer);
+		customerDataAccess.update(customer);
 	}
 
 	@Override
 	public Customer create(Customer customer) throws Throwable {
-		customerDataAccess.saveOrUpdate(customer);
+		customerDataAccess.create(customer);
 		return customer;
 	}
 

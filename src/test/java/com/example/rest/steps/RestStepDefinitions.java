@@ -7,8 +7,10 @@ import static org.hamcrest.Matchers.not;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.options;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Set;
@@ -56,6 +58,18 @@ public class RestStepDefinitions{
 		context.perform(options(endpoint));
 	}
 	
+	@When("^I put to \"([^\"]*)\" and media type \"([^\"]*)\" with:$")
+	public void I_put_to_and_media_type_with(String endpoint, String mediaType, String content) throws Throwable {
+		MediaType requestedMediatype = MediaType.parseMediaTypes(mediaType).get(0);
+	    context.perform(put(endpoint).content(content)
+				.contentType(requestedMediatype));
+    }
+
+	@Then("^the JSON response should have \"([^\"]*)\" with the text \"([^\"]*)\"$")
+	public void the_JSON_response_should_have_with_the_text(String jsonPath, String expectedContent) throws Throwable {
+		context.andExpect(jsonPath(jsonPath, is(expectedContent)));
+	}
+	
 	@Then("^the response is not empty$")
 	public void the_response_is_not_empty() throws Throwable {
 		context.andExpect(content().string(not(isEmptyString())));
@@ -75,6 +89,11 @@ public class RestStepDefinitions{
 	public void the_response_format_is(String mediaType) throws Throwable {
 		context.andExpect(content().contentType(
 					MediaType.parseMediaTypes(mediaType).get(0)));
+	}
+	
+	@Then("^the \"([^\"]*)\" header is \"([^\"]*)\"$")
+	public void the_header_is(String header, String value) throws Throwable {
+		context.andExpect(header().string(header, is(value)));
 	}
 	
 	@Then("^the Allow header contains \"([^\"]*)\"$")

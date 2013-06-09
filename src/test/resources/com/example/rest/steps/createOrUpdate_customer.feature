@@ -22,4 +22,13 @@ Feature: A user creates a customer resource
     }
     """
    Then the status is 201
+   	And the "Location" header is "http://localhost/customers/Steve"
    
+  Scenario: Update an exisiting customer
+   When I put to "/customers/EP94" and media type "application/json" with:
+    """
+    {
+      "customerDescription": "A new description customer"
+    }
+    """
+   Then the status is 204   
