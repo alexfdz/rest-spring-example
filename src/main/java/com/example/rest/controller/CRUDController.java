@@ -25,6 +25,7 @@ public abstract class CRUDController<T extends Resource> {
 	protected static final HttpMethod[] RESOURCE_ALLOWED_METHODS = new HttpMethod[] {HttpMethod.GET, HttpMethod.PUT, HttpMethod.DELETE};
 
 	//TODO: HATEOAS
+	//TODO: VERSIONING
 	//http://blog.furiousbob.com/2011/12/06/hateoas-restful-services-using-spring-3-1/
 	
 	public abstract List<T> findAll() throws Throwable;
