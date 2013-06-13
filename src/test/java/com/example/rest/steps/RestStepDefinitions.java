@@ -4,10 +4,6 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isEmptyString;
 import static org.hamcrest.Matchers.not;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.options;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -17,7 +13,7 @@ import java.util.Set;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -28,41 +24,31 @@ import cucumber.api.java.en.When;
 
 @WebAppConfiguration
 @ContextConfiguration("classpath:cucumber.xml")
-public class RestStepDefinitions{
-	
-	@Autowired
-	protected StepDefinitionsContext context;
+public class RestStepDefinitions extends RestOperations{
 	
 	@When("^I post to \"([^\"]*)\" and media type \"([^\"]*)\" with:$")
 	public void I_post_to_with(String endpoint, String mediaType, String content) throws Throwable {
-		MediaType requestedMediatype = MediaType.parseMediaTypes(mediaType).get(0);
-	    context.perform(
-				post(endpoint)
-				.content(content)
-				.contentType(requestedMediatype));
+		post(endpoint, mediaType, content);
 	}
 	
 	@When("^I get \"([^\"]*)\"$")
 	public void I_get(String endpoint) throws Throwable {
-		I_get_and_accepted_media_type(endpoint, MediaType.APPLICATION_JSON_VALUE);
+		get(endpoint, MediaType.APPLICATION_JSON_VALUE);
 	}
 
 	@When("^I get \"([^\"]*)\" and accepted media type \"([^\"]*)\"$")
 	public void I_get_and_accepted_media_type(String endpoint, String mediaType) throws Throwable {
-		MediaType requestedMediatype = MediaType.parseMediaTypes(mediaType).get(0);
-		context.perform(get(endpoint).accept(requestedMediatype));
+		get(endpoint, mediaType);
 	}
 
 	@When("^I ask the options for \"([^\"]*)\"$")
 	public void I_ask_the_options_for(String endpoint) throws Throwable {
-		context.perform(options(endpoint));
+		options(endpoint);
 	}
 	
 	@When("^I put to \"([^\"]*)\" and media type \"([^\"]*)\" with:$")
 	public void I_put_to_and_media_type_with(String endpoint, String mediaType, String content) throws Throwable {
-		MediaType requestedMediatype = MediaType.parseMediaTypes(mediaType).get(0);
-	    context.perform(put(endpoint).content(content)
-				.contentType(requestedMediatype));
+		put(endpoint,mediaType, content);
     }
 
 	@Then("^the JSON response should have \"([^\"]*)\" with the text \"([^\"]*)\"$")
@@ -77,12 +63,14 @@ public class RestStepDefinitions{
 	
 	@Then("^the response is empty$")
 	public void the_response_is_empty() throws Throwable {
-		context.andExpect(content().string(is(isEmptyString())));
+		context.andExpect(content().string(is(isEmptyString())))
+			.andExpect(status().is(equalTo(HttpStatus.NO_CONTENT.value())));
 	}
-
-	@Then("^the status is ([^\"]*)$")
-	public void the_status_is(Integer status) throws Throwable {
-		context.andExpect(status().is(equalTo(status)));
+	
+	@Then("^the response status is ([^\"]*)$")
+	public void the_status_is(String statusReason) throws Throwable {
+		int statusCode = getHttpStatusCode(statusReason);
+		context.andExpect(status().is(equalTo(statusCode)));
 	}
 	
 	@Then("^the response media type is \"([^\"]*)\"$")
@@ -91,17 +79,17 @@ public class RestStepDefinitions{
 					MediaType.parseMediaTypes(mediaType).get(0)));
 	}
 	
-	@Then("^the \"([^\"]*)\" header is \"([^\"]*)\"$")
+	@Then("^the ([^\"]*) header is \"([^\"]*)\"$")
 	public void the_header_is(String header, String value) throws Throwable {
 		context.andExpect(header().string(header, is(value)));
 	}
 	
-	@Then("^the Allow header contains \"([^\"]*)\"$")
-	public void the_Allow_header_contains(final String allowedMethods) throws Throwable {
-		context.andExpect(header().string("Allow", new BaseMatcher<String>() {
+	@Then("^the ([^\"]*) header contains \"([^\"]*)\"$")
+	public void the_Allow_header_contains(String header, final String values) throws Throwable {
+		context.andExpect(header().string(header, new BaseMatcher<String>() {
 			@Override
 			public boolean matches(Object item) {
-				Set<String> expectedAllowMethodsSet = StringUtils.commaDelimitedListToSet(allowedMethods);
+				Set<String> expectedAllowMethodsSet = StringUtils.commaDelimitedListToSet(values);
 				Set<String> allowMethodsSet = StringUtils.commaDelimitedListToSet(item.toString());
 				return allowMethodsSet.equals(expectedAllowMethodsSet);
 			}
