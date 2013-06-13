@@ -1,7 +1,9 @@
 package com.example.rest.model;
 
-public abstract class Resource {
+import org.springframework.hateoas.ResourceSupport;
+
+public abstract class Resource extends ResourceSupport{
 	
-	public abstract String getId();
+	public abstract String getUniqueId();
 
 }

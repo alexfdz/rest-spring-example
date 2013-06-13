@@ -36,7 +36,7 @@ public class Customer extends Resource{
 	}
 	
 	@Override
-	public String getId() {
+	public String getUniqueId() {
 		return getName();
 	}
 }

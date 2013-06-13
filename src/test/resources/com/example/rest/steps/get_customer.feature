@@ -19,7 +19,8 @@ Feature: A REST client queries for a customer resource
  Scenario Outline: Customer resource query  
    When I get a customer with id "<id>"
    Then the response status is ok
-   	And the person customer description is "<customerDescription>"
+   	And the response contains a correct customer
+   	And the customer description is "<customerDescription>"
   Examples:
     | id | customerDescription |
     | EP94 | description EP94 |

@@ -23,6 +23,7 @@ Feature: A REST client creates or updates customer resources
     }
     """
    Then the response status is created
+   	And the response contains a correct customer
    	And the Location header is "http://localhost/customers/Steve"
    
   Scenario: Update an exisiting customer

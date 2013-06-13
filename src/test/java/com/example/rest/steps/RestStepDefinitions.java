@@ -13,6 +13,7 @@ import java.util.Set;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
@@ -97,4 +98,10 @@ public class RestStepDefinitions extends RestOperations{
 			public void describeTo(Description description) {
 			}}));
 	}
+	
+	@Then("^the response contains a self relation link$")
+	public void the_response_contains_a_self_relation_link() throws Throwable {
+		context.andExpect(jsonPath("$.links[0].rel", is(Link.REL_SELF)));
+	}
+
 }

@@ -5,6 +5,7 @@ import static com.example.rest.controller.RequestMappings.CUSTOMER_CONTROLLER_UR
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -13,6 +14,7 @@ import com.example.rest.exception.ResourceNotFoundException;
 import com.example.rest.model.Customer;
 
 @Controller
+@ExposesResourceFor(Customer.class)
 @RequestMapping(value= CUSTOMER_CONTROLLER_URI)
 public class CustomerController extends CRUDController<Customer>{
 	

@@ -1,7 +1,10 @@
 package com.example.rest.steps;
 
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.core.IsNull.notNullValue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
+import org.springframework.hateoas.Link;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 
@@ -57,10 +60,14 @@ public class CustomerStepDefinitions extends RestOperations{
 		put(RequestMappings.CUSTOMER_CONTROLLER_URI + "/" + customerId, mediaType, content);
 	}
 
-
-	@Then("^the person customer description is \"([^\"]*)\"$")
-	public void the_person_customer_description_is(String customerDescription) throws Throwable {
+	@Then("^the customer description is \"([^\"]*)\"$")
+	public void the_customer_description_is(String customerDescription) throws Throwable {
 		context.andExpect(jsonPath("$.customerDescription").value(customerDescription));
 	}
 
+	@Then("^the response contains a correct customer$")
+	public void the_response_contains_a_correct_customer() throws Throwable {
+		context.andExpect(jsonPath("$.links[0].rel", is(Link.REL_SELF)))
+			.andExpect(jsonPath("$.name", is(notNullValue())));
+	}
 }

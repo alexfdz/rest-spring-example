@@ -1,10 +1,14 @@
 package com.example.rest.controller;
 
+import java.lang.reflect.ParameterizedType;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityLinks;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -15,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import com.example.rest.model.Resource;
 
@@ -24,9 +27,12 @@ public abstract class CRUDController<T extends Resource> {
 	protected static final HttpMethod[] COLLECTION_ALLOWED_METHODS = new HttpMethod[] {HttpMethod.GET, HttpMethod.POST};
 	protected static final HttpMethod[] RESOURCE_ALLOWED_METHODS = new HttpMethod[] {HttpMethod.GET, HttpMethod.PUT, HttpMethod.DELETE};
 
-	//TODO: HATEOAS
+	@Autowired 
+	protected EntityLinks entityLinks;
+	//TODO: Cucumber context, init the DAO entities
 	//TODO: VERSIONING
-	//http://blog.furiousbob.com/2011/12/06/hateoas-restful-services-using-spring-3-1/
+	//TODO: AUTH
+	//TODO: Cache headers
 	
 	public abstract List<T> findAll() throws Throwable;
 	
@@ -42,21 +48,23 @@ public abstract class CRUDController<T extends Resource> {
 	
 	@RequestMapping(method= RequestMethod.GET)
 	public @ResponseBody List<T> getResources() throws Throwable {
-		return findAll();
+		List<T> resources = findAll();
+		return addResourcesLinks(resources);
 	}
 	
 	@RequestMapping(value="/{id}", method= RequestMethod.GET)
 	@ResponseBody
 	public T getResource(@PathVariable final String id) throws Throwable {
-		return getById(id);
+		T resource = getById(id);
+		return addResourceLinks(resource);
 	}
 	
 	@RequestMapping(method= {RequestMethod.POST})
 	@ResponseBody
-	public ResponseEntity<T> createResource(@RequestBody T resource, 
-			UriComponentsBuilder uriBuilder) throws Throwable {
+	public ResponseEntity<T> createResource(@RequestBody T resource) throws Throwable {
 		T createdResource = create(resource);
-		return new ResponseEntity<T>(getPostHeaders(uriBuilder, createdResource), 
+		addResourceLinks(createdResource);
+		return new ResponseEntity<T>(createdResource, getPostHeaders(createdResource), 
 				HttpStatus.CREATED);
 	}
 
@@ -92,13 +100,29 @@ public abstract class CRUDController<T extends Resource> {
 		return new ResponseEntity<Void>(headers, HttpStatus.NO_CONTENT);
 	}
 	
-	protected HttpHeaders getPostHeaders(UriComponentsBuilder uriBuilder, T resource){
+	private HttpHeaders getPostHeaders(T resource){
 		HttpHeaders headers = new HttpHeaders();
-		headers.setLocation(getUri(uriBuilder, resource));
+		String href = resource.getId().getHref();
+		headers.setLocation(URI.create(href));
 		return headers;
 	}
 	
-	protected URI getUri(UriComponentsBuilder uriBuilder, T resource){
-		return uriBuilder.path(getUriRoot() + "/{id}").buildAndExpand(resource.getId()).toUri();
+	private List<T> addResourcesLinks(List<T> resources){
+		for (T resource : resources) {
+			addResourceLinks(resource);
+		}
+		return resources;
+	}
+	
+	protected T addResourceLinks(T resource){
+		Link link = entityLinks.linkToSingleResource(getResourceClass(), resource.getUniqueId());
+		resource.add(link);
+		return resource;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private Class<T> getResourceClass(){
+		return (Class<T>) ((ParameterizedType) getClass()
+                .getGenericSuperclass()).getActualTypeArguments()[0];
 	}
 }
