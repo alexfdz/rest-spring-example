@@ -31,6 +31,7 @@ public abstract class CRUDController<T extends Resource> {
 	protected EntityLinks entityLinks;
 
 	//TODO: VERSIONING
+	//TODO: ROOT rest service (catalog)
 	//TODO: Support for AJAX - Cross browsing
 	//TODO: AUTH
 	//TODO: Cache headers
@@ -44,8 +45,6 @@ public abstract class CRUDController<T extends Resource> {
 	public abstract T create(T resource) throws Throwable;
 	
 	public abstract void delete(T resource) throws Throwable;
-	
-	public abstract String getUriRoot();
 	
 	@RequestMapping(method= RequestMethod.GET)
 	public @ResponseBody List<T> getResources() throws Throwable {
@@ -126,4 +125,5 @@ public abstract class CRUDController<T extends Resource> {
 		return (Class<T>) ((ParameterizedType) getClass()
                 .getGenericSuperclass()).getActualTypeArguments()[0];
 	}
+	
 }

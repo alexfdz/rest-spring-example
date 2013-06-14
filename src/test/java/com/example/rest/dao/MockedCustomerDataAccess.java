@@ -17,8 +17,11 @@ public class MockedCustomerDataAccess implements CustomerDataAccess{
 	
 	private Map<String, Customer> customers;
 	
+	private Map<String, List<String>> customersMessages;
+	
 	public MockedCustomerDataAccess(){
 		customers = new HashMap<String, Customer>();
+		customersMessages = new HashMap<String, List<String>>();
 	}
 
 	public Customer addCustomer(String customerName){
@@ -64,5 +67,21 @@ public class MockedCustomerDataAccess implements CustomerDataAccess{
 	
 	public void reset(){
 		customers = new HashMap<String, Customer>();
+	}
+
+	@Override
+	public void sendMessage(String customerName, String message) {
+		List<String> customerMessages = null;
+		if(customersMessages.containsKey(customerName)){
+			customerMessages = customersMessages.get(customerName);
+		}else{
+			customerMessages = new ArrayList<String>();
+			customersMessages.put(customerName, customerMessages);
+		}
+		customerMessages.add(message);
+	}
+	
+	public Map<String, List<String>> getCustomersMessages() {
+		return customersMessages;
 	}
 }

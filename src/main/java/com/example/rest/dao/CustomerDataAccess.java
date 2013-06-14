@@ -17,5 +17,7 @@ public interface CustomerDataAccess {
 	public List<Customer> findAll();
 	
 	public boolean customerExists(String customerName);
+	
+	public void sendMessage(String customerName, String message);
 
 }
