@@ -1,5 +1,8 @@
 package com.example.rest.controller;
 
+import static com.example.rest.model.LinkRelations.REL_COLLECTION;
+import static com.example.rest.model.LinkRelations.REL_UP;
+
 import java.lang.reflect.ParameterizedType;
 import java.net.URI;
 import java.util.ArrayList;
@@ -20,13 +23,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import static com.example.rest.model.LinkRelations.*;
+
 import com.example.rest.model.Resource;
 
 public abstract class CRUDController<T extends Resource> {
 	
-	protected static final HttpMethod[] COLLECTION_ALLOWED_METHODS = new HttpMethod[] {HttpMethod.GET, HttpMethod.POST};
-	protected static final HttpMethod[] RESOURCE_ALLOWED_METHODS = new HttpMethod[] {HttpMethod.GET, HttpMethod.PUT, HttpMethod.DELETE};
+	public static final String VERSION_HEADER = "x-version";
+	public static final HttpMethod[] COLLECTION_ALLOWED_METHODS = new HttpMethod[] {HttpMethod.GET, HttpMethod.POST};
+	public static final HttpMethod[] RESOURCE_ALLOWED_METHODS = new HttpMethod[] {HttpMethod.GET, HttpMethod.PUT, HttpMethod.DELETE};
 	
 	
 	@Autowired 

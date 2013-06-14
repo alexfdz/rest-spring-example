@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+import static com.example.rest.controller.CRUDController.VERSION_HEADER;
 import java.util.Set;
 
 import org.hamcrest.BaseMatcher;
@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.util.StringUtils;
 
 import cucumber.api.java.en.Then;
@@ -32,6 +33,17 @@ public class RestStepDefinitions extends RestOperations{
 		post(endpoint, mediaType, content);
 	}
 	
+	@When("^I post to \"([^\"]*)\", version \"([^\"]*)\" and media type \"([^\"]*)\" with:$")
+	public void I_post_to_version_and_media_type_with(String endpoint, String version, 
+			String mediaType, String content) throws Throwable {
+		MediaType requestedMediatype = MediaType.parseMediaTypes(mediaType).get(0);
+	    context.perform(
+	    		MockMvcRequestBuilders.post(endpoint)
+				.content(content)
+				.header(VERSION_HEADER, version)
+				.contentType(requestedMediatype));
+	}
+
 	@When("^I get \"([^\"]*)\"$")
 	public void I_get(String endpoint) throws Throwable {
 		get(endpoint, MediaType.APPLICATION_JSON_VALUE);

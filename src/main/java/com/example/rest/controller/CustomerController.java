@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.example.rest.dao.CustomerDataAccess;
 import com.example.rest.exception.ResourceNotFoundException;
 import com.example.rest.model.Customer;
+import com.example.rest.model.ExtendedMessage;
 import com.example.rest.model.Message;
 
 @Controller
@@ -61,10 +62,18 @@ public class CustomerController extends CRUDController<Customer>{
 		customerDataAccess.delete(customer);
 	}
 	
-	@RequestMapping(value="/{id}" + SEND_COSTUMER_MESSAGE_URI, method= RequestMethod.POST)
+	@RequestMapping(value="/{id}" + SEND_COSTUMER_MESSAGE_URI, method= RequestMethod.POST, 
+			headers= VERSION_HEADER + "=1")
 	public Customer sendMessage(@PathVariable final String id, @RequestBody Message message) throws Throwable {
 		Customer customer = getById(id);
 		customerDataAccess.sendMessage(id, message.getText());
+		return customer;
+	}
+	
+	@RequestMapping(value="/{id}" + SEND_COSTUMER_MESSAGE_URI, method= RequestMethod.POST)
+	public Customer sendExtendedMessage(@PathVariable final String id, @RequestBody ExtendedMessage message) throws Throwable {
+		Customer customer = getById(id);
+		customerDataAccess.sendMessage(id, message.getExtendedText());
 		return customer;
 	}
 	
