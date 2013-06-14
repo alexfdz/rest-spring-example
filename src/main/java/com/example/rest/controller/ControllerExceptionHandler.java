@@ -14,12 +14,12 @@ import com.example.rest.exception.ResourceNotFoundException;
 @ControllerAdvice
 public class ControllerExceptionHandler {
 
-	@ExceptionHandler
+	@ExceptionHandler(IllegalResourceContentException.class)
 	public HttpEntity<VndErrors> handleBadRequestException(IllegalResourceContentException exception) {
 		return doHandleException(exception, HttpStatus.BAD_REQUEST);
 	}
 	
-	@ExceptionHandler
+	@ExceptionHandler(ResourceNotFoundException.class)
 	protected HttpEntity<VndErrors> handleBadRequestException(ResourceNotFoundException exception) {
 		return doHandleException(exception, HttpStatus.NOT_FOUND);
 	}

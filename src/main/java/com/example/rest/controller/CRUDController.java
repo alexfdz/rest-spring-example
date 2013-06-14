@@ -2,6 +2,7 @@ package com.example.rest.controller;
 
 import java.lang.reflect.ParameterizedType;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -19,14 +20,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
+import static com.example.rest.model.LinkRelations.*;
 import com.example.rest.model.Resource;
 
 public abstract class CRUDController<T extends Resource> {
 	
 	protected static final HttpMethod[] COLLECTION_ALLOWED_METHODS = new HttpMethod[] {HttpMethod.GET, HttpMethod.POST};
 	protected static final HttpMethod[] RESOURCE_ALLOWED_METHODS = new HttpMethod[] {HttpMethod.GET, HttpMethod.PUT, HttpMethod.DELETE};
-
+	
+	
 	@Autowired 
 	protected EntityLinks entityLinks;
 
@@ -107,17 +109,24 @@ public abstract class CRUDController<T extends Resource> {
 		return headers;
 	}
 	
-	private List<T> addResourcesLinks(List<T> resources){
+	private List<T> addResourcesLinks(List<T> resources) throws Throwable{
 		for (T resource : resources) {
 			addResourceLinks(resource);
 		}
 		return resources;
 	}
 	
-	protected T addResourceLinks(T resource){
-		Link link = entityLinks.linkToSingleResource(getResourceClass(), resource.getUniqueId());
-		resource.add(link);
+	private T addResourceLinks(T resource) throws Throwable{
+		resource.add(getResourceLinks(resource));
 		return resource;
+	}
+	
+	protected List<Link> getResourceLinks(T resource)  throws Throwable{
+		List<Link> links = new ArrayList<Link>();
+		links.add(entityLinks.linkToSingleResource(getResourceClass(), resource.getUniqueId()));
+		links.add(entityLinks.linkToCollectionResource(getResourceClass()).withRel(REL_UP));
+		links.add(entityLinks.linkToCollectionResource(getResourceClass()).withRel(REL_COLLECTION));
+		return links;
 	}
 	
 	@SuppressWarnings("unchecked")

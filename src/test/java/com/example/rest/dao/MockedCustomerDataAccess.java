@@ -40,7 +40,8 @@ public class MockedCustomerDataAccess implements CustomerDataAccess{
 	@Override
 	public void create(Customer customer) {
 		if(StringUtils.isEmpty(customer.getName())){
-			throw new IllegalResourceContentException();
+			throw new IllegalResourceContentException(
+					"The customer name is mandatory.");
 		}
 		customers.put(customer.getName(), customer);
 	}

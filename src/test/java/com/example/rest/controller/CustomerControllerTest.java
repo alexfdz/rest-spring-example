@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import com.example.rest.dao.MockedCustomerDataAccess;
 import com.example.rest.model.Customer;
+import com.example.rest.model.Message;
 
 
 public class CustomerControllerTest{
@@ -20,7 +21,7 @@ public class CustomerControllerTest{
 	MockedCustomerDataAccess customerDataAccess;
 	
 	String mockedCustomerName = "Mark";
-	String mockedCustomerMessage = "Hello!";
+	String mockedCustomerMessageText = "Hello!";
 	
 	@Before
 	public void setUp(){
@@ -40,9 +41,13 @@ public class CustomerControllerTest{
 	
 	@Test
 	public void for_a_sent_message_I_should_see_it_in_the_messages_queue() throws Throwable{
-		controller.sendMessage(mockedCustomerName, mockedCustomerMessage);
+		Message message = new Message();
+		message.setText(mockedCustomerMessageText);
+		
+		controller.sendMessage(mockedCustomerName, message);
+		
 		List<String> customerMessages = customerDataAccess.getCustomersMessages().get(mockedCustomerName);
 		assertThat(customerMessages, is(notNullValue()));
-		assertThat(customerMessages, hasItem(mockedCustomerMessage));
+		assertThat(customerMessages, hasItem(mockedCustomerMessageText));
 	}
 }
