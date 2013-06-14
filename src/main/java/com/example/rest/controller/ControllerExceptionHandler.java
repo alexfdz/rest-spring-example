@@ -1,33 +1,36 @@
 package com.example.rest.controller;
 
+import org.springframework.hateoas.VndErrors;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.HttpStatusCodeException;
 
 import com.example.rest.exception.IllegalResourceContentException;
 import com.example.rest.exception.ResourceNotFoundException;
-import com.example.rest.model.Error;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
 
-	@ExceptionHandler(IllegalResourceContentException.class)
-	@ResponseBody
-	public ResponseEntity<Error> handleBadRequestException(IllegalResourceContentException ex) {
-		return Error.buildResponse(HttpStatus.BAD_REQUEST, ex);
+	@ExceptionHandler
+	public HttpEntity<VndErrors> handleBadRequestException(IllegalResourceContentException exception) {
+		return doHandleException(exception, HttpStatus.BAD_REQUEST);
 	}
 	
-	@ExceptionHandler(ResourceNotFoundException.class)
-	@ResponseBody
-	public ResponseEntity<Error> handleBadRequestException(ResourceNotFoundException ex) {
-		return Error.buildResponse(HttpStatus.NOT_FOUND, ex);
+	@ExceptionHandler
+	protected HttpEntity<VndErrors> handleBadRequestException(ResourceNotFoundException exception) {
+		return doHandleException(exception, HttpStatus.NOT_FOUND);
 	}
 	
 	@ExceptionHandler(HttpStatusCodeException.class)
-	protected ResponseEntity<Error> entityNotFound(HttpStatusCodeException exception){
-		return Error.buildResponse(exception.getStatusCode(), exception);
+	protected HttpEntity<VndErrors> entityNotFound(HttpStatusCodeException exception){
+		return doHandleException(exception, exception.getStatusCode());
+	}
+	
+	private HttpEntity<VndErrors> doHandleException(Exception e, HttpStatus httpStatus) {
+		VndErrors vndErrors = new VndErrors(new VndErrors.VndError(e.getClass().getName(), e.getMessage()));
+		return new ResponseEntity<VndErrors>(vndErrors, httpStatus);
 	}
 }
