@@ -4,12 +4,17 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.example.rest.controller.RequestMappings;
+import com.example.rest.dao.MockedCustomerDataAccess;
 
+import cucumber.api.java.After;
+import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
@@ -17,6 +22,19 @@ import cucumber.api.java.en.When;
 @ContextConfiguration("classpath:cucumber.xml")
 public class CustomerStepDefinitions extends RestOperations{
 	
+	@Autowired
+	public MockedCustomerDataAccess customerDataAccess;
+	
+	@After
+	public void cleanScenario(){
+		customerDataAccess.reset();
+	}
+	
+	@Given("^the system contains the following customer:$")
+	public void the_system_contains_the_following_customer(String content) throws Throwable {
+		 post(RequestMappings.CUSTOMER_CONTROLLER_URI, MediaType.APPLICATION_JSON_VALUE, content);
+	}
+
 	@When("^I get the list of customers$")
 	public void I_get_the_list_of_customers() throws Throwable {
 		get(RequestMappings.CUSTOMER_CONTROLLER_URI);

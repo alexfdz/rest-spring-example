@@ -2,7 +2,25 @@
 Feature: A REST client queries for a customer resource
   As a REST client
   I want to get a customer resource information
-
+  
+  Background: The system cointains two customers
+  	Given the system contains the following customer:
+		"""
+		{
+		  "name": "Mark",
+		  "customerDescription": "Mark description",
+		  "notes": "Customer notes"
+		}
+		"""
+	  And the system contains the following customer:
+		"""
+		{
+		  "name": "Rose",
+		  "customerDescription": "Rose description",
+		  "notes": "Customer notes"
+		}
+		"""
+		
  Scenario Outline: Customer list query  
    When I get the list of customers and accepted media type "<mediaType>"
    Then the response status is ok
@@ -23,15 +41,15 @@ Feature: A REST client queries for a customer resource
    	And the customer description is "<customerDescription>"
   Examples:
     | id | customerDescription |
-    | EP94 | description EP94 |
-    | EP18 | description EP18 |
+    | Mark | Mark description |
+    | Rose | Rose description |
 
  Scenario: Customer resource query with incorrect id
-   When I get a customer with id "W19"
+   When I get a customer with id "Chris"
    Then the response status is not found
    
  Scenario Outline: Customer resource query with correct media types  
-   When I get a customer with id "EP94" and accepted media type "<mediaType>"
+   When I get a customer with id "Mark" and accepted media type "<mediaType>"
    Then the response status is ok
    	And the response media type is "<mediaType>"
   Examples:
@@ -40,7 +58,7 @@ Feature: A REST client queries for a customer resource
     | application/xml |
     
  Scenario Outline: Customer resource query with not supported media types  
-   When I get a customer with id "EP94" and accepted media type "<mediaType>"
+   When I get a customer with id "Mark" and accepted media type "<mediaType>"
    Then the response status is not acceptable
   Examples:
     | mediaType |
@@ -53,6 +71,6 @@ Feature: A REST client queries for a customer resource
    	And the Allow header contains "POST,GET"
    	
   Scenario: Customer entity OPTIONS query 
-   When I ask the options for a customer with id "EP94"
+   When I ask the options for a customer with id "Mark"
    Then the response is empty
    	And the Allow header contains "GET,PUT,DELETE"

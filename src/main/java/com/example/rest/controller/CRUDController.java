@@ -29,8 +29,9 @@ public abstract class CRUDController<T extends Resource> {
 
 	@Autowired 
 	protected EntityLinks entityLinks;
-	//TODO: Cucumber context, init the DAO entities
+
 	//TODO: VERSIONING
+	//TODO: Support for AJAX - Cross browsing
 	//TODO: AUTH
 	//TODO: Cache headers
 	

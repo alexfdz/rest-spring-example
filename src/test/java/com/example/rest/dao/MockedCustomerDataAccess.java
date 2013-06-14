@@ -15,21 +15,17 @@ import com.example.rest.model.Customer;
 @Component
 public class MockedCustomerDataAccess implements CustomerDataAccess{
 	
-	public static final String MOCKED_CUSTOMER_EP94_NAME = "EP94";
-	public static final String MOCKED_CUSTOMER_EP18_NAME = "EP18";
-	
 	private Map<String, Customer> customers;
 	
 	public MockedCustomerDataAccess(){
 		customers = new HashMap<String, Customer>();
-		customers.put(MOCKED_CUSTOMER_EP94_NAME, buildCostumer(MOCKED_CUSTOMER_EP94_NAME));
-		customers.put(MOCKED_CUSTOMER_EP18_NAME, buildCostumer(MOCKED_CUSTOMER_EP18_NAME));
 	}
 
-	private Customer buildCostumer(String customerName){
+	public Customer addCustomer(String customerName){
 		Customer customer = new Customer();
 		customer.setName(customerName);
 		customer.setCustomerDescription("description " + customerName);
+		this.create(customer);
 		return customer;
 	}
 	
@@ -64,5 +60,9 @@ public class MockedCustomerDataAccess implements CustomerDataAccess{
 	@Override
 	public boolean customerExists(String customerName) {
 		return customers.containsKey(customerName);
+	}
+	
+	public void reset(){
+		customers = new HashMap<String, Customer>();
 	}
 }

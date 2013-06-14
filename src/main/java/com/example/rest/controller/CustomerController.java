@@ -55,4 +55,8 @@ public class CustomerController extends CRUDController<Customer>{
 	public String getUriRoot() {
 		return CUSTOMER_CONTROLLER_URI;
 	}
+	
+	protected void setCustomerDataAccess(CustomerDataAccess customerDataAccess) {
+		this.customerDataAccess = customerDataAccess;
+	}
 }
