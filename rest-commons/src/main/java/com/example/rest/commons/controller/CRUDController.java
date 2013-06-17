@@ -39,6 +39,7 @@ public abstract class CRUDController<T extends Resource> {
 	//TODO: Testing for commons
 	//TODO: VERSIONING
 	//TODO: ROOT rest service (catalog)
+	//TODO: Restful documentation apiary - Spring generation
 	//TODO: Support for AJAX - Cross browsing
 	//TODO: AUTH
 	//TODO: Cache headers

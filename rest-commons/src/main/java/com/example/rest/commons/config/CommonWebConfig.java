@@ -24,6 +24,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 public class CommonWebConfig extends WebMvcConfigurerAdapter {
 
 	private XStreamMarshaller marshaller;
+	
+	protected List<HttpMessageConverter<?>> converters;
 	 
 	@Override
 	public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
@@ -44,6 +46,8 @@ public class CommonWebConfig extends WebMvcConfigurerAdapter {
         converter.setMarshaller(marshaller());
         converter.setUnmarshaller(marshaller());
         converters.add(converter);
+        
+        this.converters = converters;
 	}
 	
 	@Bean
@@ -54,5 +58,8 @@ public class CommonWebConfig extends WebMvcConfigurerAdapter {
             return marshaller;
         }
     }
-
+	
+	public List<HttpMessageConverter<?>> getConverters() {
+		return converters;
+	}
 }

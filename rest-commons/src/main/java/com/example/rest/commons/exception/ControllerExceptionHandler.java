@@ -1,4 +1,4 @@
-package com.example.rest.commons.controller;
+package com.example.rest.commons.exception;
 
 import org.springframework.hateoas.VndErrors;
 import org.springframework.http.HttpEntity;
@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpStatusCodeException;
 
-import com.example.rest.commons.exception.IllegalResourceContentException;
-import com.example.rest.commons.exception.ResourceNotFoundException;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
