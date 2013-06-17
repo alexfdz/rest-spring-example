@@ -20,7 +20,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Configuration
 @EnableWebMvc
 @EnableEntityLinks
-@ComponentScan(basePackages="com.example.rest")
+@ComponentScan(basePackages="com.example.rest.commons")
 public class CommonWebConfig extends WebMvcConfigurerAdapter {
 
 	private XStreamMarshaller marshaller;
