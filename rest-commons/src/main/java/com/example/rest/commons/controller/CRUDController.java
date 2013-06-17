@@ -36,6 +36,7 @@ public abstract class CRUDController<T extends Resource> {
 	@Autowired 
 	protected EntityLinks entityLinks;
 
+	//TODO: Testing for commons
 	//TODO: VERSIONING
 	//TODO: ROOT rest service (catalog)
 	//TODO: Support for AJAX - Cross browsing
