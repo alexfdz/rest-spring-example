@@ -2,24 +2,19 @@ package com.example.rest.commons.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.mvc.condition.NameValueExpression;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-import com.example.rest.commons.config.CommonWebConfig;
 import com.example.rest.commons.model.Endpoint;
 
 @Controller
@@ -28,10 +23,6 @@ public class CatalogController {
 	
 	@Autowired
 	protected RequestMappingHandlerMapping handlerMapping;
-	
-	@Autowired
-	protected CommonWebConfig webConfig;
-	
 	
 	@RequestMapping(method= RequestMethod.GET)
 	public @ResponseBody Map<String, Endpoint> getEndpointsCatalog() throws Throwable {
@@ -61,10 +52,6 @@ public class CatalogController {
 	
 	protected void resolveEndpoint(RequestMappingInfo requestMappingInfo, Endpoint endpoint){
 		endpoint.addMethods(resolveMethods(requestMappingInfo));
-		endpoint.addParams(resolveExpressions(requestMappingInfo.getParamsCondition().getExpressions()));
-		endpoint.addHeaders(resolveExpressions(requestMappingInfo.getHeadersCondition().getExpressions()));
-		endpoint.addConsumes(resolveMediaTypes(requestMappingInfo.getConsumesCondition().getConsumableMediaTypes()));
-		endpoint.addProduces(resolveMediaTypes(requestMappingInfo.getProducesCondition().getProducibleMediaTypes()));
 	}
 	
 	protected List<String> resolvePatterns(RequestMappingInfo requestMappingInfo){
@@ -87,39 +74,5 @@ public class CatalogController {
 			}
 		}
 		return resolvedMethods;
-	}
-	
-	protected List<String> resolveExpressions(Set<NameValueExpression<String>> expressions ){
-		List<String> resolvedHeaders = new ArrayList<String>();
-		if(expressions != null){
-			for (NameValueExpression<String> expression : expressions) {
-				resolvedHeaders.add(expression.getName() + "=" + expression.getValue());
-			}
-		}
-		return resolvedHeaders;
-	}
-	
-	protected List<String> resolveMediaTypes(Set<MediaType> mediaTypes){
-		List<String> resolvedMediaTypes = new ArrayList<String>();
-		
-		if(mediaTypes == null || mediaTypes.isEmpty()){
-			mediaTypes = getAllSupportedMediaTypes();
-		}
-		
-		if(mediaTypes != null){
-			for (MediaType mediaType : mediaTypes) {
-				resolvedMediaTypes.add(mediaType.toString());
-			}
-		}
-		return resolvedMediaTypes;
-	}
-
-	private Set<MediaType> getAllSupportedMediaTypes() {
-		List<HttpMessageConverter<?>> messageConverters = webConfig.getConverters();
-		Set<MediaType> allSupportedMediaTypes = new LinkedHashSet<MediaType>();
-		for (HttpMessageConverter<?> messageConverter : messageConverters) {
-			allSupportedMediaTypes.addAll(messageConverter.getSupportedMediaTypes());
-		}
-		return allSupportedMediaTypes;
 	}
 }
