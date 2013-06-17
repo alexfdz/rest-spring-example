@@ -17,7 +17,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.example.rest.commons.test.steps.RestOperations;
-import com.example.rest.customer.dao.MockedCustomerDataAccess;
+import com.example.rest.customer.dao.MapCustomerDataAccess;
 
 import cucumber.api.java.After;
 import cucumber.api.java.en.Given;
@@ -29,7 +29,7 @@ import cucumber.api.java.en.When;
 public class CustomerStepDefinitions extends RestOperations{
 	
 	@Autowired
-	public MockedCustomerDataAccess customerDataAccess;
+	public MapCustomerDataAccess customerDataAccess;
 	
 	@After
 	public void cleanScenario(){

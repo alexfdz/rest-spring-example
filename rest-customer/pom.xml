@@ -9,7 +9,7 @@
 	</parent>
 
 	<artifactId>rest-customer</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<packaging>war</packaging>
 
 	<name>Customer API</name>
@@ -18,10 +18,12 @@
 		<dependency>
 			<groupId>com.example.rest</groupId>
 			<artifactId>rest-commons</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.example.rest</groupId>
 			<artifactId>rest-commons-test</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

@@ -13,13 +13,13 @@ import com.example.rest.commons.exception.IllegalResourceContentException;
 import com.example.rest.customer.model.Customer;
 
 @Component
-public class MockedCustomerDataAccess implements CustomerDataAccess{
+public class MapCustomerDataAccess implements CustomerDataAccess{
 	
 	private Map<String, Customer> customers;
 	
 	private Map<String, List<String>> customersMessages;
 	
-	public MockedCustomerDataAccess(){
+	public MapCustomerDataAccess(){
 		customers = new HashMap<String, Customer>();
 		customersMessages = new HashMap<String, List<String>>();
 	}

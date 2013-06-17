@@ -10,7 +10,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.example.rest.customer.dao.MockedCustomerDataAccess;
+import com.example.rest.customer.dao.MapCustomerDataAccess;
 import com.example.rest.customer.model.Customer;
 import com.example.rest.customer.model.Message;
 
@@ -18,7 +18,7 @@ import com.example.rest.customer.model.Message;
 public class CustomerControllerTest{
 	
 	CustomerController controller;
-	MockedCustomerDataAccess customerDataAccess;
+	MapCustomerDataAccess customerDataAccess;
 	
 	String mockedCustomerName = "Mark";
 	String mockedCustomerMessageText = "Hello!";
@@ -26,7 +26,7 @@ public class CustomerControllerTest{
 	@Before
 	public void setUp(){
 		controller = new CustomerController();
-		customerDataAccess = new MockedCustomerDataAccess();
+		customerDataAccess = new MapCustomerDataAccess();
 		
 		customerDataAccess.addCustomer(mockedCustomerName);
 		controller.setCustomerDataAccess(customerDataAccess);
