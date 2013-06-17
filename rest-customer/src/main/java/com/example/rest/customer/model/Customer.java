@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.example.rest.common.model.Resource;
+import com.example.rest.commons.model.Resource;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement

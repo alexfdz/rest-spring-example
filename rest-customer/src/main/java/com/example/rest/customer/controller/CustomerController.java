@@ -17,11 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.example.rest.common.controller.CRUDController;
-import com.example.rest.common.exception.ResourceNotFoundException;
+import com.example.rest.commons.controller.CRUDController;
+import com.example.rest.commons.exception.ResourceNotFoundException;
 import com.example.rest.customer.dao.CustomerDataAccess;
 import com.example.rest.customer.model.Customer;
-import com.example.rest.customer.model.ExtendedMessage;
 import com.example.rest.customer.model.Message;
 
 @Controller
@@ -63,18 +62,10 @@ public class CustomerController extends CRUDController<Customer>{
 		customerDataAccess.delete(customer);
 	}
 	
-	@RequestMapping(value="/{id}" + SEND_COSTUMER_MESSAGE_URI, method= RequestMethod.POST, 
-			headers= VERSION_HEADER + "=1")
+	@RequestMapping(value="/{id}" + SEND_COSTUMER_MESSAGE_URI, method= RequestMethod.POST)
 	public Customer sendMessage(@PathVariable final String id, @RequestBody Message message) throws Throwable {
 		Customer customer = getById(id);
 		customerDataAccess.sendMessage(id, message.getText());
-		return customer;
-	}
-	
-	@RequestMapping(value="/{id}" + SEND_COSTUMER_MESSAGE_URI, method= RequestMethod.POST)
-	public Customer sendExtendedMessage(@PathVariable final String id, @RequestBody ExtendedMessage message) throws Throwable {
-		Customer customer = getById(id);
-		customerDataAccess.sendMessage(id, message.getExtendedText());
 		return customer;
 	}
 	

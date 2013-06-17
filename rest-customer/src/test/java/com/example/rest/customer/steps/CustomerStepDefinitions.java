@@ -1,7 +1,7 @@
 package com.example.rest.customer.steps;
 
-import static com.example.rest.common.model.LinkRelations.REL_COLLECTION;
-import static com.example.rest.common.model.LinkRelations.REL_UP;
+import static com.example.rest.commons.model.LinkRelations.REL_COLLECTION;
+import static com.example.rest.commons.model.LinkRelations.REL_UP;
 import static com.example.rest.customer.controller.CustomerController.RequestMappings.CUSTOMER_CONTROLLER_URI;
 import static com.example.rest.customer.controller.CustomerController.RequestMappings.SEND_COSTUMER_MESSAGE_URI;
 import static com.example.rest.customer.controller.CustomerController.RequestMappings.SEND_MESSAGE_REL;
@@ -16,8 +16,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import com.example.rest.common.test.steps.RestOperations;
-import com.example.rest.customer.dao.MockedCustomerDataAccess;
+import com.example.rest.commons.test.steps.RestOperations;
+import com.example.rest.customer.dao.MapCustomerDataAccess;
 
 import cucumber.api.java.After;
 import cucumber.api.java.en.Given;
@@ -29,7 +29,7 @@ import cucumber.api.java.en.When;
 public class CustomerStepDefinitions extends RestOperations{
 	
 	@Autowired
-	public MockedCustomerDataAccess customerDataAccess;
+	public MapCustomerDataAccess customerDataAccess;
 	
 	@After
 	public void cleanScenario(){
